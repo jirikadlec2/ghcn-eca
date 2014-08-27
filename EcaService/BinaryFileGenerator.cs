@@ -49,13 +49,12 @@ namespace EcaService
             return result;
         }
         
-        public void SaveToBinaryFile(EcaTimeValue[] vals, string siteCode, EcaVariable ghcnVariable)
+        public void SaveToBinaryFile(EcaTimeValue[] vals, string siteCode, EcaVariable ghcnVariable, string folder)
         {
             //the begin date
             DateTime beginDate = vals[0].DateTimeUtc;
             int valueCount = vals.Length;
-            string folder = "E:\\dev\\ghcn_files2\\";
-            string fileName = folder + string.Format("{0}_{1}.dat", ghcnVariable.VariableCode, siteCode);
+            string fileName = Path.Combine(folder, string.Format("{0}_{1}.dat", ghcnVariable.VariableCode, siteCode));
             using(FileStream fs = new FileStream(fileName, FileMode.Create))
             {
                 //write the data values as an array of integers

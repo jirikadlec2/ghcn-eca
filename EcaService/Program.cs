@@ -13,7 +13,9 @@ namespace EcaService
             //new EcaSiteUpdater().GetEcaSiteInformation();
             //new EcaSiteUpdater().SaveSiteInformationToDatabase();
 
-            new EcaSiteUpdater().SaveGhcnSiteInformationToDatabase(GhcnVariableTypes.tmax(), "ghcn_usa_tmax.txt");
+            new EcaSiteUpdater().SaveGhcnSiteInformationToDatabase(GhcnVariableTypes.snow(), 
+@"C:\dev\github\ghcn-eca\EcaService\data_files\ghcn_global_snow.txt",
+@"C:\dev\ghcn_data");
 
             //List<EcaSite> siteList = new EcaSiteUpdater().GetSiteListFromTextFile();
 

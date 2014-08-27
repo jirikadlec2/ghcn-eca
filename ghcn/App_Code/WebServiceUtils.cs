@@ -1032,7 +1032,7 @@ namespace WaterOneFlow.odws
             v.sourceCode = "1";
             v.sourceID = "1";
             v.timeOffset = "01:00";
-            v.Value = 0.0M;
+            v.Value = -9999.9M;
             return v;
         }
     }

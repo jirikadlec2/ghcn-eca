@@ -47,11 +47,10 @@ namespace EcaService
 
         public List<EcaSite> GetSiteListFromTextFile(string textFileName) 
         {
-            string textFile = @"E:\dev\drought\EcaService\" + textFileName;
             List<EcaSite> siteList = new List<EcaSite>();
 
             long defaultSiteID = 1;
-            using (StreamReader r = new StreamReader(textFile))
+            using (StreamReader r = new StreamReader(textFileName))
             {
                 string line;
                 while ((line = r.ReadLine()) != null)
@@ -316,7 +315,7 @@ namespace EcaService
             return variablesList;
         }
 
-        public List<EcaSiteInfo> GetGhcnSiteInformation(EcaVariable ghcnVariable, string siteDataFile) 
+        public List<EcaSiteInfo> DownloadGhcn(EcaVariable ghcnVariable, string siteDataFile, string ghcn_folder) 
         {
             EcaVariable tminVariable = new EcaVariable { UrlCode = "gdcntmin", VariableCode = "TN", VariableName = "minimum temperature", DataFileName = "gdcntmin", VariableID = 3 };
 
@@ -336,8 +335,8 @@ namespace EcaService
                 
                 List<EcaSeriesInfo> seriesList = new List<EcaSeriesInfo>();
 
-                if (!s.SiteCode2.StartsWith("US")) 
-                    continue; //limit to U.S.
+                //if (!s.SiteCode2.StartsWith("US")) 
+                //    continue; //limit to U.S.
 
                 try
                 {              
@@ -348,7 +347,7 @@ namespace EcaService
 
                     try
                     {
-                        bfg.SaveToBinaryFile(ectv2, s.SiteCode2, ghcnVariable);
+                        bfg.SaveToBinaryFile(ectv2, s.SiteCode2, ghcnVariable, ghcn_folder);
                     }
                     catch
                     {
@@ -378,7 +377,7 @@ namespace EcaService
 
                 Console.WriteLine(s.SiteID + " " + s.SiteCode2 + " " + s.SiteName);
             }
-            return siteInfoList;
+             return siteInfoList;
         }
 
 
@@ -419,7 +418,7 @@ namespace EcaService
             return siteInfoList;
         }
 
-        public void SaveGhcnSiteInformationToDatabase(EcaVariable ecaVariableType, string siteListFile) 
+        public void SaveGhcnSiteInformationToDatabase(EcaVariable ecaVariableType, string siteListFile, string ghcn_folder) 
         {
             //(1) Save or update each Variable
             List<EcaVariable> variablesList = GetGhcnVariables();
@@ -433,7 +432,7 @@ namespace EcaService
             //EcaVariable tmax = new EcaVariable { UrlCode = "gdcntmax", VariableCode = "TX", VariableName = "maximum temperature", DataFileName = "gdcntmax", VariableID = 4 };
             //EcaVariable snow = new EcaVariable { UrlCode = "gdcnsnwd", VariableCode = "SN", VariableName = "snow depth", DataFileName = "gdcnsnwd", VariableID = 9 };
 
-            List<EcaSiteInfo> siteInfoList = GetGhcnSiteInformation(ecaVariableType,siteListFile);
+            List<EcaSiteInfo> siteInfoList = DownloadGhcn(ecaVariableType,siteListFile, ghcn_folder);
 
             EcaVisitor visitor = new EcaVisitor();
 
